@@ -147,12 +147,27 @@ function findSteps(scheme_id) { // EXERCISE C
 }
 
 function add(scheme) { // EXERCISE D
+  return db('schemes')
+  .insert(scheme)
+  .then(([scheme_id]) => {
+    return db('schemes')
+      .where('scheme_id', scheme_id).first()
+  })
+  
   /*
     1D- This function creates a new scheme and resolves to _the newly created scheme_.
   */
 }
 
 function addStep(scheme_id, step) { // EXERCISE E
+  return db('steps')
+    .insert({
+      ...step,
+      scheme_id
+    })
+    .then(() => {
+      return findSteps(scheme_id)
+    })
   /*
     1E- This function adds a step to the scheme with the given `scheme_id`
     and resolves to _all the steps_ belonging to the given `scheme_id`,
